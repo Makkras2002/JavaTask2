@@ -1,0 +1,9 @@
+form ->id name xAxis yAxis zAxis Radius
+17 Tom 5 7 1 4
+gtgt 5 69
+18 Karl-2 -1 1 -5
+7 Bill 1 -1 0 4
+117 Vincent 5 5 3 8
+3
+97 SuperSphere 0 0 0 14
+8 Bill 3 0 0 3
