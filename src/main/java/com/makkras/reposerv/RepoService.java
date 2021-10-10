@@ -11,4 +11,11 @@ public interface RepoService {
     void delShapeByName(CustomRepo sphereRepo,String name);
     List<Sphere> findShapeByName(CustomRepo sphereRepo, String name);
     List<Sphere> findShapeById(CustomRepo sphereRepo,int id);
+    List<Sphere> findShapesWhichAreaSizeIsInRange(CustomRepo sphereRepo,double min,double max);
+    List<Sphere> findShapesWhichCapacitySizeIsInRange(CustomRepo sphereRepo, double min, double max);
+    List<Sphere> findShapesWhichCenterIsInRangeFromOrigin(CustomRepo sphereRepo,double rangeMin, double rangeMax);
+    void sortRepoByName(CustomRepo repo);
+    void sortRepoById(CustomRepo repo);
+    void sortRepoByRadius(CustomRepo repo);
+    void sortRepoByXCordOfCenter(CustomRepo repo);
 }

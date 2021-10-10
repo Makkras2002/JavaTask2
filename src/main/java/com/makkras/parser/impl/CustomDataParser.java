@@ -8,8 +8,8 @@ import com.makkras.entity.impl.ShapeFactory;
 import com.makkras.entity.impl.Sphere;
 import com.makkras.entity.impl.SphereRepo;
 import com.makkras.parser.DataParser;
-import com.makkras.validator.DataValidator;
-import com.makkras.validator.impl.CustomValidator;
+import com.makkras.validator.SphereValidator;
+import com.makkras.validator.impl.SphereCorrectnessValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.List;
@@ -19,32 +19,16 @@ public class CustomDataParser implements DataParser {
     public SphereRepo extractToRepo(List<String> list){
         CustomRepoFactory repoFactory = new RepoFactory();
         ShapeFactory shapeFactory = new ShapeFactory();
-        DataValidator dataValidator= new CustomValidator();
+        SphereValidator sphereValidator = new SphereCorrectnessValidator();
         CustomRepo repo = repoFactory.createRepo("SPHEREREPO");
         CustomShape sphere;
         String[] rawDataArray;
         String line;
-        boolean isGoodLine;
         int tempCounter1 =0;
-        int rawDataCounter;
         while (tempCounter1<list.size()){
-            isGoodLine = true;
             line = list.get(tempCounter1);
             rawDataArray = line.split(" ");
-            rawDataCounter =2;
-            while (rawDataCounter <rawDataArray.length){
-                if(!dataValidator.checkIfNumber(rawDataArray[rawDataCounter])){
-                    isGoodLine = false;
-                    break;
-                }
-                rawDataCounter++;
-            }
-            if(isGoodLine){
-                if(rawDataArray.length != 6 || Double.parseDouble(rawDataArray[5]) <=0 || !dataValidator.checkIfNumber(rawDataArray[0])){
-                    isGoodLine =false;
-                }
-            }
-            if(!isGoodLine){
+            if(!sphereValidator.checkIfSphere(rawDataArray)){
                 logger.error("Invalid data found in file.");
             }else {
                 sphere =shapeFactory.createShape("SPHERE");
