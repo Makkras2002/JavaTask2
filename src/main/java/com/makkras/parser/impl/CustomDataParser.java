@@ -20,7 +20,7 @@ public class CustomDataParser implements DataParser {
         CustomRepoFactory repoFactory = new RepoFactory();
         ShapeFactory shapeFactory = new ShapeFactory();
         SphereValidator sphereValidator = new SphereCorrectnessValidator();
-        CustomRepo repo = repoFactory.createRepo("SPHEREREPO");
+        CustomRepo repo = repoFactory.createRepo();
         CustomShape sphere;
         String[] rawDataArray;
         String line;
@@ -31,7 +31,7 @@ public class CustomDataParser implements DataParser {
             if(!sphereValidator.checkIfSphere(rawDataArray)){
                 logger.error("Invalid data found in file.");
             }else {
-                sphere =shapeFactory.createShape("SPHERE");
+                sphere =shapeFactory.createShape();
                 sphere.setCenter(Double.parseDouble(rawDataArray[2]),Double.parseDouble(rawDataArray[3]),
                         Double.parseDouble(rawDataArray[4]));
                 sphere.setName(rawDataArray[1]);

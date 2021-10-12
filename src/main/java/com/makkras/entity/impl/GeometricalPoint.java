@@ -49,11 +49,11 @@ public class GeometricalPoint implements CustomPoint {
 
     @Override
     public String toString() {
-        return "GeometricalPoint{" +
-                "xAxis=" + xAxis +
-                ", yAxis=" + yAxis +
-                ", zAxis=" + zAxis +
-                '}';
+        final StringBuilder sb = new StringBuilder("GeometricalPoint{");
+        sb.append("xAxis=").append(xAxis);
+        sb.append(", yAxis=").append(yAxis);
+        sb.append(", zAxis=").append(zAxis);
+        sb.append('}');
+        return sb.toString();
     }
-
 }

@@ -12,7 +12,7 @@ public class Sphere implements CustomShape {
     private double radius;
     public Sphere(){
         CustomPointFactory factory = new PointFactory();
-        center =(GeometricalPoint) factory.createPoint("GEOMETRICALPOINT");
+        center =(GeometricalPoint) factory.createPoint();
     }
     public int getId() {
         return id;
@@ -62,11 +62,12 @@ public class Sphere implements CustomShape {
 
     @Override
     public String toString() {
-        return "Sphere{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", center=" + center.toString() +
-                ", radius=" + radius +
-                '}';
+        final StringBuilder sb = new StringBuilder("Sphere{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", center=").append(center.toString());
+        sb.append(", radius=").append(radius);
+        sb.append('}');
+        return sb.toString();
     }
 }

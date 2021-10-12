@@ -5,5 +5,5 @@ import com.makkras.exception.FileInteractionException;
 import java.util.List;
 
 public interface DataReaderFromFile {
-    public List<String> readDataFromFileIntoStringList(String filepath) throws FileInteractionException;
+    List<String> readDataFromFileIntoStringList(String filepath) throws FileInteractionException;
 }
