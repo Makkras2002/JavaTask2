@@ -6,8 +6,6 @@ import com.makkras.exception.FileInteractionException;
 import com.makkras.fileops.impl.CustomDataReaderFromFile;
 import com.makkras.fileops.impl.FileDataOutputer;
 import com.makkras.parser.impl.CustomDataParser;
-import com.makkras.reposerv.RepoService;
-import com.makkras.reposerv.impl.SphereRepoService;
 import com.makkras.service.ChangeHandler;
 import com.makkras.service.MathHandler;
 import com.makkras.service.impl.SphereChangeHandler;
@@ -25,7 +23,6 @@ public class Main {
     public static void main(String[] args) {
         boolean signal = true;
         Scanner scanner = new Scanner(System.in);
-        RepoService repoService = new SphereRepoService();
         MathHandler mathHandler = new SphereMathHandler();
         DataValidator dataValidator = new CustomValidator();
         ChangeHandler changeHandler = new SphereChangeHandler();
@@ -90,7 +87,7 @@ public class Main {
                         break;
                     }else {
                         logger.info("write name: ");
-                        repoService.delShapeByName(repo,scanner.nextLine());
+                        repo.delShapeByName(scanner.nextLine());
                     }
                     break;
                 }
@@ -102,7 +99,7 @@ public class Main {
                         logger.info("write id: ");
                         String idToDel =scanner.nextLine();
                         if(dataValidator.checkIfNumber(idToDel)){
-                            repoService.delShapeById(repo,Integer.parseInt(idToDel));
+                            repo.delShapeById(Integer.parseInt(idToDel));
                         }else {
                             logger.error("Invalid data was entered.");
                         }
@@ -114,7 +111,7 @@ public class Main {
                         logger.error("Data wasn't read from file.");
                         break;
                     }else {
-                        List<Sphere> list = repoService.findShapeByName(repo,scanner.nextLine());
+                        List<Sphere> list = repo.findShapeByName(scanner.nextLine());
                         for (Sphere o : list){
                             logger.info("AreaSize: "+ mathHandler.countAreaSize(o) +" CapacitySize: "+ mathHandler.countCapacitySize(o));
                         }
@@ -130,7 +127,7 @@ public class Main {
                         if(!dataValidator.checkIfNumber(id)){
                             logger.error("Invalid data was entered.");
                         }else {
-                            List<Sphere> list = repoService.findShapeById(repo,Integer.parseInt(id));
+                            List<Sphere> list = repo.findShapeById(Integer.parseInt(id));
                             for (Sphere o : list){
                                 logger.info("AreaSize: "+ mathHandler.countAreaSize(o) +" CapacitySize: "+ mathHandler.countCapacitySize(o));
                             }
@@ -144,7 +141,7 @@ public class Main {
                         logger.error("Data wasn't read from file.");
                         break;
                     }else {
-                        List<Sphere> list = repoService.findShapeByName(repo,scanner.nextLine());
+                        List<Sphere> list = repo.findShapeByName(scanner.nextLine());
                         for (Sphere o : list){
                             logger.info("Capacity correlation : "+ mathHandler.countCapacityCorrelationCreatedByCordSpaceXYCutSphere(o));
                         }
@@ -160,7 +157,7 @@ public class Main {
                         if(!dataValidator.checkIfNumber(id)){
                             logger.error("Invalid data was entered.");
                         }else {
-                            List<Sphere> list = repoService.findShapeById(repo,Integer.parseInt(id));
+                            List<Sphere> list = repo.findShapeById(Integer.parseInt(id));
                             for (Sphere o : list){
                                 logger.info("Does touch any cord area: " + mathHandler.doesSphereTouchAnyCordArea(o));
                             }
@@ -180,7 +177,7 @@ public class Main {
                         if(!dataValidator.checkIfNumber(min) || !dataValidator.checkIfNumber(max)){
                             logger.error("Invalid data was entered.");
                         }else {
-                            List<Sphere> list = repoService.findShapesWhichAreaSizeIsInRange(repo,Double.parseDouble(min),Double.parseDouble(max));
+                            List<Sphere> list = repo.findShapesWhichAreaSizeIsInRange(Double.parseDouble(min),Double.parseDouble(max));
                             for (Sphere o : list){
                                 logger.info(o.toString());
                             }
@@ -200,7 +197,7 @@ public class Main {
                         if(!dataValidator.checkIfNumber(min) || !dataValidator.checkIfNumber(max)){
                             logger.error("Invalid data was entered.");
                         }else {
-                            List<Sphere> list = repoService.findShapesWhichCapacitySizeIsInRange(repo,Double.parseDouble(min),Double.parseDouble(max));
+                            List<Sphere> list = repo.findShapesWhichCapacitySizeIsInRange(Double.parseDouble(min),Double.parseDouble(max));
                             for (Sphere o : list){
                                 logger.info(o.toString());
                             }
@@ -220,7 +217,7 @@ public class Main {
                         if(!dataValidator.checkIfNumber(min) || !dataValidator.checkIfNumber(max)){
                             logger.error("Invalid data was entered.");
                         }else {
-                            List<Sphere> list = repoService.findShapesWhichCenterIsInRangeFromOrigin(repo,Double.parseDouble(min),Double.parseDouble(max));
+                            List<Sphere> list = repo.findShapesWhichCenterIsInRangeFromOrigin(Double.parseDouble(min),Double.parseDouble(max));
                             for (Sphere o : list){
                                 logger.info(o.toString());
                             }
@@ -233,7 +230,7 @@ public class Main {
                         logger.error("Data wasn't read from file.");
                         break;
                     }else {
-                        repoService.sortRepoByName(repo);
+                        repo.sortRepoByName();
                     }
                     break;
                 }
@@ -242,7 +239,7 @@ public class Main {
                         logger.error("Data wasn't read from file.");
                         break;
                     }else {
-                        repoService.sortRepoById(repo);
+                        repo.sortRepoById();
                     }
                     break;
                 }
@@ -251,7 +248,7 @@ public class Main {
                         logger.error("Data wasn't read from file.");
                         break;
                     }else {
-                        repoService.sortRepoByRadius(repo);
+                        repo.sortRepoByRadius();
                     }
                     break;
                 }
@@ -260,7 +257,7 @@ public class Main {
                         logger.error("Data wasn't read from file.");
                         break;
                     }else {
-                        repoService.sortRepoByXCordOfCenter(repo);
+                        repo.sortRepoByXCordOfCenter();
                     }
                     break;
                 }
@@ -279,7 +276,7 @@ public class Main {
                             if(Double.parseDouble(newRadius)<=0){
                                 logger.error("Invalid data was entered.");
                             }else {
-                                List<Sphere> list = repoService.findShapeById(repo,Integer.parseInt(id));
+                                List<Sphere> list = repo.findShapeById(Integer.parseInt(id));
                                 for (Sphere o : list){
                                     changeHandler.changeRadius(o,Double.parseDouble(newRadius));
                                 }
