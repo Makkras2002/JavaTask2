@@ -2,14 +2,18 @@ package com.makkras.entity.impl;
 
 import com.makkras.entity.CustomPointFactory;
 import com.makkras.entity.CustomShape;
+import com.makkras.observer.Observable;
+import com.makkras.observer.Observer;
+import com.makkras.observer.SphereEvent;
 
 import java.util.Objects;
 
-public class Sphere implements CustomShape {
+public class Sphere implements CustomShape, Observable {
     private int id;
     private String name;
     private GeometricalPoint center;
     private double radius;
+    private Observer observer;
     public Sphere(){
         CustomPointFactory factory = new PointFactory();
         center =(GeometricalPoint) factory.createPoint();
@@ -42,10 +46,12 @@ public class Sphere implements CustomShape {
         center.setXAxis(x);
         center.setYAxis(y);
         center.setZAxis(z);
+        notifyObservers();
     }
 
     public void setRadius(double radius) {
         this.radius = radius;
+        notifyObservers();
     }
     @Override
     public boolean equals(Object o) {
@@ -69,5 +75,25 @@ public class Sphere implements CustomShape {
         sb.append(", radius=").append(radius);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public void attach(Observer observer) {
+        if(observer != null){
+            this.observer = observer;
+        }
+    }
+
+    @Override
+    public void detach() {
+        this.observer = null;
+    }
+
+    @Override
+    public void notifyObservers() {
+        if(observer!= null){
+            SphereEvent event = new SphereEvent(this);
+            observer.paramsChanged(event);
+        }
     }
 }

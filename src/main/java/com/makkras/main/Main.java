@@ -2,20 +2,21 @@ package com.makkras.main;
 
 import com.makkras.entity.CustomRepo;
 import com.makkras.entity.impl.Sphere;
+import com.makkras.entity.impl.WareHouse;
 import com.makkras.exception.FileInteractionException;
 import com.makkras.fileops.impl.CustomDataReaderFromFile;
 import com.makkras.fileops.impl.FileDataOutputer;
+import com.makkras.observer.impl.SphereObserver;
 import com.makkras.parser.impl.CustomDataParser;
 import com.makkras.service.ChangeHandler;
 import com.makkras.service.MathHandler;
 import com.makkras.service.impl.SphereChangeHandler;
 import com.makkras.service.impl.SphereMathHandler;
-import com.makkras.validator.DataValidator;
+import com.makkras.specification.impl.*;
 import com.makkras.validator.impl.CustomValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -24,7 +25,6 @@ public class Main {
         boolean signal = true;
         Scanner scanner = new Scanner(System.in);
         MathHandler mathHandler = new SphereMathHandler();
-        DataValidator dataValidator = new CustomValidator();
         ChangeHandler changeHandler = new SphereChangeHandler();
         CustomRepo repo =null;
         CustomDataParser parser = new CustomDataParser();
@@ -49,11 +49,14 @@ public class Main {
             logger.info("15.Sort by id.");
             logger.info("16.Sort by radius.");
             logger.info("17.Sort by XAxis coordinates.");
-            logger.info("18.Find by name and change radius.");
+            logger.info("18.Find by id and change radius.");
+            logger.info("19.Show WareHouse.");
+            logger.info("20.Find by id and change XYZ.");
             switch (scanner.nextLine()){
                 case "1":{
                     try {
                         repo = parser.extractToRepo(dataReaderFromFile.readDataFromFileIntoStringList("filesfoulder/source.txt"));
+                        WareHouse.getInstance().fillMap(repo);
                     } catch (FileInteractionException e) {
                         logger.error(e.getMessage());
                     }
@@ -65,7 +68,9 @@ public class Main {
                         logger.error("Data wasn't read from file.");
                         break;
                     }else {
-                        repo.showRepo();
+                        for (Sphere o : repo.getList()){
+                            logger.info(o.toString());
+                        }
                     }
                     break;
                 }
@@ -87,7 +92,10 @@ public class Main {
                         break;
                     }else {
                         logger.info("write name: ");
-                        repo.delShapeByName(scanner.nextLine());
+                        String name = scanner.nextLine();
+                        for(Sphere o : repo.query(new NameSpecification(name))){
+                            repo.removeSphere(o);
+                        }
                     }
                     break;
                 }
@@ -98,8 +106,10 @@ public class Main {
                     }else {
                         logger.info("write id: ");
                         String idToDel =scanner.nextLine();
-                        if(dataValidator.checkIfNumber(idToDel)){
-                            repo.delShapeById(Integer.parseInt(idToDel));
+                        if(CustomValidator.getInstance().checkIfNumber(idToDel)){
+                            for(Sphere o : repo.query(new IdSpecification(Integer.parseInt(idToDel)))){
+                                repo.removeSphere(o);
+                            }
                         }else {
                             logger.error("Invalid data was entered.");
                         }
@@ -111,8 +121,9 @@ public class Main {
                         logger.error("Data wasn't read from file.");
                         break;
                     }else {
-                        List<Sphere> list = repo.findShapeByName(scanner.nextLine());
-                        for (Sphere o : list){
+                        logger.info("write name: ");
+                        String name = scanner.nextLine();
+                        for (Sphere o : repo.query(new NameSpecification(name))){
                             logger.info("AreaSize: "+ mathHandler.countAreaSize(o) +" CapacitySize: "+ mathHandler.countCapacitySize(o));
                         }
                     }
@@ -124,11 +135,10 @@ public class Main {
                         break;
                     }else {
                         String id = scanner.nextLine();
-                        if(!dataValidator.checkIfNumber(id)){
+                        if(!CustomValidator.getInstance().checkIfNumber(id)){
                             logger.error("Invalid data was entered.");
                         }else {
-                            List<Sphere> list = repo.findShapeById(Integer.parseInt(id));
-                            for (Sphere o : list){
+                            for (Sphere o : repo.query(new IdSpecification(Integer.parseInt(id)))){
                                 logger.info("AreaSize: "+ mathHandler.countAreaSize(o) +" CapacitySize: "+ mathHandler.countCapacitySize(o));
                             }
                         }
@@ -141,8 +151,8 @@ public class Main {
                         logger.error("Data wasn't read from file.");
                         break;
                     }else {
-                        List<Sphere> list = repo.findShapeByName(scanner.nextLine());
-                        for (Sphere o : list){
+                        String name = scanner.nextLine();
+                        for (Sphere o : repo.query(new NameSpecification(name))){
                             logger.info("Capacity correlation : "+ mathHandler.countCapacityCorrelationCreatedByCordSpaceXYCutSphere(o));
                         }
                     }
@@ -154,11 +164,10 @@ public class Main {
                         break;
                     }else {
                         String id = scanner.nextLine();
-                        if(!dataValidator.checkIfNumber(id)){
+                        if(!CustomValidator.getInstance().checkIfNumber(id)){
                             logger.error("Invalid data was entered.");
                         }else {
-                            List<Sphere> list = repo.findShapeById(Integer.parseInt(id));
-                            for (Sphere o : list){
+                            for (Sphere o : repo.query(new IdSpecification(Integer.parseInt(id)))){
                                 logger.info("Does touch any cord area: " + mathHandler.doesSphereTouchAnyCordArea(o));
                             }
                         }
@@ -174,11 +183,10 @@ public class Main {
                         String min = scanner.nextLine();
                         logger.info("max : ");
                         String max = scanner.nextLine();
-                        if(!dataValidator.checkIfNumber(min) || !dataValidator.checkIfNumber(max)){
+                        if(!CustomValidator.getInstance().checkIfNumber(min) || !CustomValidator.getInstance().checkIfNumber(max)){
                             logger.error("Invalid data was entered.");
                         }else {
-                            List<Sphere> list = repo.findShapesWhichAreaSizeIsInRange(Double.parseDouble(min),Double.parseDouble(max));
-                            for (Sphere o : list){
+                            for (Sphere o : repo.query(new AreaSizeIsInRangeSpecification(Double.parseDouble(min),Double.parseDouble(max)))){
                                 logger.info(o.toString());
                             }
                         }
@@ -194,11 +202,10 @@ public class Main {
                         String min = scanner.nextLine();
                         logger.info("max : ");
                         String max = scanner.nextLine();
-                        if(!dataValidator.checkIfNumber(min) || !dataValidator.checkIfNumber(max)){
+                        if(!CustomValidator.getInstance().checkIfNumber(min) || !CustomValidator.getInstance().checkIfNumber(max)){
                             logger.error("Invalid data was entered.");
                         }else {
-                            List<Sphere> list = repo.findShapesWhichCapacitySizeIsInRange(Double.parseDouble(min),Double.parseDouble(max));
-                            for (Sphere o : list){
+                            for (Sphere o : repo.query(new CapacitySizeIsInRangeSpecification(Double.parseDouble(min),Double.parseDouble(max)))){
                                 logger.info(o.toString());
                             }
                         }
@@ -214,11 +221,10 @@ public class Main {
                         String min = scanner.nextLine();
                         logger.info("max : ");
                         String max = scanner.nextLine();
-                        if(!dataValidator.checkIfNumber(min) || !dataValidator.checkIfNumber(max)){
+                        if(!CustomValidator.getInstance().checkIfNumber(min) || !CustomValidator.getInstance().checkIfNumber(max)){
                             logger.error("Invalid data was entered.");
                         }else {
-                            List<Sphere> list = repo.findShapesWhichCenterIsInRangeFromOrigin(Double.parseDouble(min),Double.parseDouble(max));
-                            for (Sphere o : list){
+                            for (Sphere o : repo.query(new CenterIsInRangeFromOriginSpecification(Double.parseDouble(min),Double.parseDouble(max)))){
                                 logger.info(o.toString());
                             }
                         }
@@ -270,16 +276,52 @@ public class Main {
                         String id = scanner.nextLine();
                         logger.info("Enter radius: ");
                         String newRadius = scanner.nextLine();
-                        if(!dataValidator.checkIfNumber(id) || !dataValidator.checkIfNumber(newRadius)){
+                        if(!CustomValidator.getInstance().checkIfNumber(id) || !CustomValidator.getInstance().checkIfNumber(newRadius)){
                             logger.error("Invalid data was entered.");
                         }else {
                             if(Double.parseDouble(newRadius)<=0){
                                 logger.error("Invalid data was entered.");
                             }else {
-                                List<Sphere> list = repo.findShapeById(Integer.parseInt(id));
-                                for (Sphere o : list){
+                                for (Sphere o : repo.query(new IdSpecification(Integer.parseInt(id)))){
+                                    o.attach(new SphereObserver());
                                     changeHandler.changeRadius(o,Double.parseDouble(newRadius));
+                                    o.detach();
                                 }
+                            }
+                        }
+                    }
+                    break;
+                }
+                case "19":{
+                    if(!isRead){
+                        logger.error("Data wasn't read from file.");
+                        break;
+                    }else {
+                        logger.info(WareHouse.getInstance().showWareHouse());
+                    }
+                    break;
+                }
+                case "20":{
+                    if(!isRead){
+                        logger.error("Data wasn't read from file.");
+                        break;
+                    }else {
+                        logger.info("Enter id: ");
+                        String id = scanner.nextLine();
+                        logger.info("Enter x: ");
+                        String x = scanner.nextLine();
+                        logger.info("Enter y: ");
+                        String y = scanner.nextLine();
+                        logger.info("Enter z: ");
+                        String z = scanner.nextLine();
+                        if(!CustomValidator.getInstance().checkIfNumber(id) || !CustomValidator.getInstance().checkIfNumber(x)||
+                                !CustomValidator.getInstance().checkIfNumber(y)||!CustomValidator.getInstance().checkIfNumber(z)){
+                            logger.error("Invalid data was entered.");
+                        }else {
+                            for (Sphere o : repo.query(new IdSpecification(Integer.parseInt(id)))){
+                                o.attach(new SphereObserver());
+                                changeHandler.changeXYZ(o,Double.parseDouble(x),Double.parseDouble(y),Double.parseDouble(z));
+                                o.detach();
                             }
                         }
                     }

@@ -37,7 +37,7 @@ public class CustomDataParser implements DataParser {
                 sphere.setName(rawDataArray[1]);
                 sphere.setId((int) Double.parseDouble(rawDataArray[0]));
                 sphere.setRadius(Double.parseDouble(rawDataArray[5]));
-                repo.addShape((Sphere) sphere);
+                repo.addSphere((Sphere) sphere);
             }
             tempCounter1++;
         }
