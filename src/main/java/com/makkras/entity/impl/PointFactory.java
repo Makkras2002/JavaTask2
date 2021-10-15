@@ -1,11 +1,10 @@
 package com.makkras.entity.impl;
 
-import com.makkras.entity.CustomPoint;
-import com.makkras.entity.CustomPointFactory;
+import com.makkras.entity.GeometricalPointFactory;
 
-public class PointFactory implements CustomPointFactory {
+public class PointFactory implements GeometricalPointFactory {
 
-    public CustomPoint createPoint() {
+    public GeometricalPoint createPoint() {
         return new GeometricalPoint();
     }
 }

@@ -1,10 +1,8 @@
 package com.makkras.entity.impl;
 
-import com.makkras.entity.CustomPoint;
-
 import java.util.Objects;
 
-public class GeometricalPoint implements CustomPoint {
+public class GeometricalPoint{
     private double xAxis;
     private double yAxis;
     private double zAxis;

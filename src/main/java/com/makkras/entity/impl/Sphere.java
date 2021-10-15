@@ -1,6 +1,6 @@
 package com.makkras.entity.impl;
 
-import com.makkras.entity.CustomPointFactory;
+import com.makkras.entity.GeometricalPointFactory;
 import com.makkras.entity.CustomShape;
 import com.makkras.observer.Observable;
 import com.makkras.observer.Observer;
@@ -15,7 +15,7 @@ public class Sphere implements CustomShape, Observable {
     private double radius;
     private Observer observer;
     public Sphere(){
-        CustomPointFactory factory = new PointFactory();
+        GeometricalPointFactory factory = new PointFactory();
         center =(GeometricalPoint) factory.createPoint();
     }
     public int getId() {
