@@ -1,4 +1,4 @@
-package com.makkras.entity;
+package com.makkras.entity.factory;
 
 import com.makkras.entity.impl.GeometricalPoint;
 

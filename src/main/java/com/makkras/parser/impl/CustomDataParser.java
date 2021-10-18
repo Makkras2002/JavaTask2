@@ -1,26 +1,31 @@
 package com.makkras.parser.impl;
 
-import com.makkras.entity.CustomRepo;
-import com.makkras.entity.CustomRepoFactory;
 import com.makkras.entity.CustomShape;
-import com.makkras.entity.impl.RepoFactory;
-import com.makkras.entity.impl.ShapeFactory;
+import com.makkras.entity.factory.impl.ShapeFactory;
 import com.makkras.entity.impl.Sphere;
-import com.makkras.entity.impl.SphereRepo;
 import com.makkras.parser.DataParser;
 import com.makkras.validator.SphereValidator;
 import com.makkras.validator.impl.SphereCorrectnessValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomDataParser implements DataParser {
     private static Logger logger = LogManager.getLogger();
-    public SphereRepo extractToRepo(List<String> list){
-        CustomRepoFactory repoFactory = new RepoFactory();
+    private CustomDataParser(){}
+    private static CustomDataParser instance;
+    public static CustomDataParser getInstance(){
+        if(instance == null){
+            instance = new CustomDataParser();
+        }
+        return instance;
+    }
+    public List<Sphere> extractToList(List<String> list){
         ShapeFactory shapeFactory = new ShapeFactory();
         SphereValidator sphereValidator = new SphereCorrectnessValidator();
-        CustomRepo repo = repoFactory.createRepo();
+        List<Sphere> repo = new ArrayList<>();
         CustomShape sphere;
         String[] rawDataArray;
         String line;
@@ -37,10 +42,10 @@ public class CustomDataParser implements DataParser {
                 sphere.setName(rawDataArray[1]);
                 sphere.setId((int) Double.parseDouble(rawDataArray[0]));
                 sphere.setRadius(Double.parseDouble(rawDataArray[5]));
-                repo.addSphere((Sphere) sphere);
+                repo.add((Sphere) sphere);
             }
             tempCounter1++;
         }
-        return (SphereRepo) repo;
+        return repo;
     }
 }

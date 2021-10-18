@@ -1,7 +1,8 @@
 package com.makkras.entity.impl;
 
-import com.makkras.entity.GeometricalPointFactory;
+import com.makkras.entity.factory.GeometricalPointFactory;
 import com.makkras.entity.CustomShape;
+import com.makkras.entity.factory.impl.PointFactory;
 import com.makkras.observer.Observable;
 import com.makkras.observer.Observer;
 import com.makkras.observer.SphereEvent;

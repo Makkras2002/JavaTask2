@@ -1,6 +1,8 @@
 package com.makkras.main;
 
 import com.makkras.entity.CustomRepo;
+import com.makkras.entity.factory.CustomRepoFactory;
+import com.makkras.entity.factory.impl.RepoFactory;
 import com.makkras.entity.impl.Sphere;
 import com.makkras.entity.impl.WareHouse;
 import com.makkras.exception.FileInteractionException;
@@ -27,7 +29,7 @@ public class Main {
         MathHandler mathHandler = new SphereMathHandler();
         ChangeHandler changeHandler = new SphereChangeHandler();
         CustomRepo repo =null;
-        CustomDataParser parser = new CustomDataParser();
+        CustomRepoFactory repoFactory = new RepoFactory();
         FileDataOutputer fileOutputer = new FileDataOutputer();
         CustomDataReaderFromFile dataReaderFromFile = new CustomDataReaderFromFile();
         boolean isRead = false;
@@ -55,7 +57,7 @@ public class Main {
             switch (scanner.nextLine()){
                 case "1":{
                     try {
-                        repo = parser.extractToRepo(dataReaderFromFile.readDataFromFileIntoStringList("filesfoulder/source.txt"));
+                        repo = repoFactory.createRepo(CustomDataParser.getInstance().extractToList(dataReaderFromFile.readDataFromFileIntoStringList("filesfoulder/source.txt")));
                         WareHouse.getInstance().fillMap(repo);
                     } catch (FileInteractionException e) {
                         logger.error(e.getMessage());

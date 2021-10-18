@@ -4,13 +4,13 @@ import com.makkras.validator.DataValidator;
 
 public class CustomValidator implements DataValidator {
 private final static String NUMBER_PATTERN = "-?\\d+(\\.\\d+)?";
-private static CustomValidator INSTANCE;
+private static CustomValidator instance;
 private CustomValidator(){}
 public static CustomValidator getInstance(){
-    if(INSTANCE==null){
-        INSTANCE = new CustomValidator();
+    if(instance ==null){
+        instance = new CustomValidator();
     }
-    return INSTANCE;
+    return instance;
 }
 public boolean checkIfNumber(String string){
     return string.matches(NUMBER_PATTERN);

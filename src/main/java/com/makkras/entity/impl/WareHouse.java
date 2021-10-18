@@ -11,13 +11,13 @@ import java.util.stream.Stream;
 
 public class WareHouse implements CustomWareHouse {
     private static Map<Integer, List<Double>> houseMap;
-    private static WareHouse INSTANCE;
+    private static WareHouse instance;
     private WareHouse(){ houseMap= new HashMap<>();}
     public static WareHouse getInstance() {
-        if(INSTANCE ==null){
-            INSTANCE = new WareHouse();
+        if(instance ==null){
+            instance = new WareHouse();
         }
-        return INSTANCE;
+        return instance;
     }
     public String showWareHouse(){
         return houseMap.toString();
