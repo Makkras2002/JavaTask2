@@ -8,7 +8,6 @@ import com.makkras.validator.SphereValidator;
 import com.makkras.validator.impl.SphereCorrectnessValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 
