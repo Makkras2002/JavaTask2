@@ -1,7 +1,5 @@
 package com.makkras.entity.impl;
 
-import java.util.Objects;
-
 public class GeometricalPoint{
     private double xAxis;
     private double yAxis;
@@ -36,13 +34,25 @@ public class GeometricalPoint{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         GeometricalPoint that = (GeometricalPoint) o;
-        return Double.compare(that.xAxis, xAxis) == 0 && Double.compare(that.yAxis, yAxis) == 0 && Double.compare(that.zAxis, zAxis) == 0;
+
+        if (Double.compare(that.xAxis, xAxis) != 0) return false;
+        if (Double.compare(that.yAxis, yAxis) != 0) return false;
+        return Double.compare(that.zAxis, zAxis) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(xAxis, yAxis, zAxis);
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(xAxis);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(yAxis);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(zAxis);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 
     @Override

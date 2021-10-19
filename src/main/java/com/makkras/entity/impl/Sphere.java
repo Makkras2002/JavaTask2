@@ -7,8 +7,6 @@ import com.makkras.observer.Observable;
 import com.makkras.observer.Observer;
 import com.makkras.observer.SphereEvent;
 
-import java.util.Objects;
-
 public class Sphere implements CustomShape, Observable {
     private int id;
     private String name;
@@ -54,17 +52,32 @@ public class Sphere implements CustomShape, Observable {
         this.radius = radius;
         notifyObservers();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Sphere sphere = (Sphere) o;
-        return Double.compare(sphere.radius, radius) == 0 && Objects.equals(center, sphere.center);
+
+        if (id != sphere.id) return false;
+        if (Double.compare(sphere.radius, radius) != 0) return false;
+        if (name != null ? !name.equals(sphere.name) : sphere.name != null) return false;
+        if (center != null ? !center.equals(sphere.center) : sphere.center != null) return false;
+        return observer != null ? observer.equals(sphere.observer) : sphere.observer == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(center, radius);
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (center != null ? center.hashCode() : 0);
+        temp = Double.doubleToLongBits(radius);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (observer != null ? observer.hashCode() : 0);
+        return result;
     }
 
     @Override
