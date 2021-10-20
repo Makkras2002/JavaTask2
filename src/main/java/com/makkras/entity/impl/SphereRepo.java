@@ -1,16 +1,12 @@
 package com.makkras.entity.impl;
 
 import com.makkras.entity.CustomRepo;
-import com.makkras.service.MathHandler;
-import com.makkras.service.impl.SphereMathHandler;
 import com.makkras.service.spherecomparator.CustomComparator;
 import com.makkras.service.spherecomparator.impl.SphereComparatorById;
 import com.makkras.service.spherecomparator.impl.SphereComparatorByName;
 import com.makkras.service.spherecomparator.impl.SphereComparatorByRadius;
 import com.makkras.service.spherecomparator.impl.SphereComparatorByXCordOfCenter;
 import com.makkras.specification.Specification;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;

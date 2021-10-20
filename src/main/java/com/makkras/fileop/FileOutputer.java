@@ -1,4 +1,4 @@
-package com.makkras.fileops;
+package com.makkras.fileop;
 
 import com.makkras.exception.FileInteractionException;
 

@@ -1,7 +1,7 @@
-package com.makkras.fileops.impl;
+package com.makkras.fileop.impl;
 
 import com.makkras.exception.FileInteractionException;
-import com.makkras.fileops.DataReaderFromFile;
+import com.makkras.fileop.DataReaderFromFile;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

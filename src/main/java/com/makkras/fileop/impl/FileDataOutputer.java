@@ -1,7 +1,7 @@
-package com.makkras.fileops.impl;
+package com.makkras.fileop.impl;
 
 import com.makkras.exception.FileInteractionException;
-import com.makkras.fileops.FileOutputer;
+import com.makkras.fileop.FileOutputer;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
